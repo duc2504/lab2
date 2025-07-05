@@ -1,4 +1,5 @@
-package com.example.java6.Model;
+
+package com.example.java6.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -8,17 +9,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-// Role.java
 @Entity
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "Roles")
+@Getter @Setter @AllArgsConstructor @NoArgsConstructor
 public class Role {
     @Id
     private String id;
-
-    // getters, setters
 }
-

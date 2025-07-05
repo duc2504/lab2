@@ -1,13 +1,12 @@
-package com.example.java6.Service;
 
-import com.example.java6.Model.AppUser;
-import com.example.java6.Repository.UserDAO;
-import com.example.java6.Repository.UserRoleDAO;
+package com.example.java6.service;
+
+import com.example.java6.model.AppUser;
+import com.example.java6.repository.UserDAO;
+import com.example.java6.repository.UserRoleDAO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,21 +19,17 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class DaoUserDetailsManager implements UserDetailsService {
 
-    @Autowired
-    UserDAO userDAO;
-
-    @Autowired
-    UserRoleDAO userRoleDAO;
+    private final UserDAO userDAO;
+    private final UserRoleDAO userRoleDAO;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         AppUser user = userDAO.findById(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+            .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 
-        List<GrantedAuthority> authorities = userRoleDAO.findByUsername(username)
-                .stream()
-                .map(ur -> new SimpleGrantedAuthority(ur.getRole_id()))
-                .collect(Collectors.toList());
+        List<GrantedAuthority> authorities = userRoleDAO.findByUserUsername(username).stream()
+            .map(ur -> new SimpleGrantedAuthority("ROLE_" + ur.getRole().getId()))
+            .collect(Collectors.toList());
 
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
@@ -44,6 +39,4 @@ public class DaoUserDetailsManager implements UserDetailsService {
                 authorities
         );
     }
-
 }
-

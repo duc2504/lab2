@@ -1,35 +1,27 @@
-package com.example.java6.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+package com.example.java6.model;
+
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-// User.java
+import java.util.List;
+
 @Entity
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "Users")
+@Getter @Setter @AllArgsConstructor @NoArgsConstructor
 public class AppUser {
     @Id
     private String username;
-
     private String password;
     private Integer enabled;
 
-    // getters, setters
-
-
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<UserRole> userRoles;
 
     public boolean isEnabled() {
         return enabled != null && enabled == 1;
     }
-
-
-
 }

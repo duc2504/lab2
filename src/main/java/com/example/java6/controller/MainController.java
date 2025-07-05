@@ -1,3 +1,4 @@
+
 package com.example.java6.controller;
 
 import org.springframework.stereotype.Controller;
@@ -8,12 +9,11 @@ public class MainController {
 
     @GetMapping("/login")
     public String login() {
-        return "login"; // login.html hoặc login.jsp
+        return "login";
     }
 
     @GetMapping("/access-denied.html")
     public String denied() {
-        return "access-denied"; // access-denied.html
+        return "access-denied";
     }
 }
-
